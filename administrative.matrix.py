@@ -34,7 +34,7 @@ def main():
         
         url2 = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=SELECT%20DISTINCT%20%3Fitem%20%3FitemLabel%0AWHERE%20%7B%0A%09%3Fitem%20wdt%3AP279%20wd%3A'+q+'.%0A%20%20%20%20%3Fitem%20rdfs%3Alabel%20%3FitemLabel.%0A%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22en%22%20.%20%7D%0A%7D%0AORDER%20BY%20%3FitemLabel'
         url2 = '%s&format=json' % (url2)
-        sparql2 = getURL(url=url2)
+        sparql2 = getURL(url=url2)d
         json2 = loadSPARQL(sparql=sparql2)
         for result2 in json2['results']['bindings']:
             q2 = 'item' in result2 and result2['item']['value'].split('/entity/')[1] or ''
