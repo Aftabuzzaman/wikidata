@@ -44,7 +44,7 @@ def main():
     #https://wikitech.wikimedia.org/wiki/Help:Tool_Labs/Grid#Submitting_continuous_jobs_.28such_as_bots.29_with_.27jstart.27
     #jstart -N humandesc -mem 1G /usr/bin/python3 /data/project/.../human.descriptions.py
     
-    targetlangs = ['es', 'ca', 'gl', 'he', 'ar', 'fr', 'bn', 'ro', 'sq']
+    targetlangs = ['bn']
     site = pywikibot.Site('wikidata', 'wikidata')
     repo = site.data_repository()
     
@@ -688,7 +688,7 @@ def main():
                     else:
                         skiptoperson = ''
                 
-                url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=SELECT%20%3Fitem%20%7B%0A%20%20BIND%28%20STRLANG%28%20%22urllib.parse.quote%28translation%29%22%2C%20%22en%22%20%29%20AS%20%3Fdesc%20%29%20.%0A%20%20%3Fitem%20schema%3Adescription%20%3Fdesc%20.%0A%20%20MINUS%20%7B%0A%20%20%20%20%3Fitem%20schema%3Adescription%20%3Fdescription%20.%0A%20%20%20%20FILTER%28%20LANG%28%20%3Fdescription%20%29%20%3D%20%22bn%22%20%29%20.%0A%20%20%7D%0A%20%20%7D'
+                url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=SELECT%20%3Fitem%20%7B%0A%20%20BIND%28%20STRLANG%28%20%22'+urllib.parse.quote(translation)+'%29%22%2C%20%22en%22%20%29%20AS%20%3Fdesc%20%29%20.%0A%20%20%3Fitem%20schema%3Adescription%20%3Fdesc%20.%0A%20%20MINUS%20%7B%0A%20%20%20%20%3Fitem%20schema%3Adescription%20%3Fdescription%20.%0A%20%20%20%20FILTER%28%20LANG%28%20%3Fdescription%20%29%20%3D%20%22bn%22%20%29%20.%0A%20%20%7D%0A%20%20%7D'
                 url = '%s&format=json' % (url)
                 sparql = getURL(url=url)
                 json1 = loadSPARQL(sparql=sparql)
