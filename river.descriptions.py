@@ -44,16 +44,10 @@ def main():
     #https://wikitech.wikimedia.org/wiki/Help:Tool_Labs/Grid#Submitting_continuous_jobs_.28such_as_bots.29_with_.27jstart.27
     #jstart -N humandesc -mem 1G /usr/bin/python3 /data/project/.../human.descriptions.py
     
-    targetlangs = ['es', 'ca', 'gl', 'he', 'ar', 'fr', 'bn', 'ro', 'sq']
+    targetlangs = ['bn']
     site = pywikibot.Site('wikidata', 'wikidata')
     repo = site.data_repository()
     
-    genders = {
-        'Q6581097': 'male', 
-        'Q6581072': 'female', 
-    }
-    genders_list = [[x, y] for x, y in genders.items()]
-    genders_list.sort()
     
     #ca: https://ca.wikipedia.org/wiki/Llista_de_gentilicis#Llista_de_gentilicis_per_estat
     #en: https://en.wikipedia.org/wiki/List_of_adjectival_and_demonymic_forms_for_countries_and_nations
@@ -670,13 +664,6 @@ def main():
             else:
                 skiptolang = ''
         
-        for genderq, genderlabel in genders_list:
-            if skiptogender:
-                if skiptogender != genderlabel:
-                    print('Skiping gender:', genderlabel.encode('utf-8'))
-                    continue
-                else:
-                    skiptogender = ''
             
             for translation in translations_list:
                 cqueries += 1
@@ -715,7 +702,7 @@ def main():
                     data = { 'descriptions': descriptions }
                     addedlangs.sort()
                     if addedlangs:
-                        summary = 'BOT - Adding descriptions (%s languages): %s' % (len(addedlangs), ', '.join(addedlangs))
+                        summary = 'BOT - বিবরণ যোগ (%sটি ভাষা): %s' % (len(addedlangs), ', '.join(addedlangs))
                         print(summary)
                         try:
                             item.editEntity(data, summary=summary)
