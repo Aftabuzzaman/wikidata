@@ -44,10 +44,16 @@ def main():
     #https://wikitech.wikimedia.org/wiki/Help:Tool_Labs/Grid#Submitting_continuous_jobs_.28such_as_bots.29_with_.27jstart.27
     #jstart -N humandesc -mem 1G /usr/bin/python3 /data/project/.../human.descriptions.py
     
-    targetlangs = ['bn']
+    targetlangs = ['es', 'ca', 'gl', 'he', 'ar', 'fr', 'bn', 'ro', 'sq']
     site = pywikibot.Site('wikidata', 'wikidata')
     repo = site.data_repository()
     
+    genders = {
+        'Q6581097': 'male', 
+        'Q6581072': 'female', 
+    }
+    genders_list = [[x, y] for x, y in genders.items()]
+    genders_list.sort()
     
     #ca: https://ca.wikipedia.org/wiki/Llista_de_gentilicis#Llista_de_gentilicis_per_estat
     #en: https://en.wikipedia.org/wiki/List_of_adjectival_and_demonymic_forms_for_countries_and_nations
@@ -664,6 +670,13 @@ def main():
             else:
                 skiptolang = ''
         
+        for genderq, genderlabel in genders_list:
+            if skiptogender:
+                if skiptogender != genderlabel:
+                    print('Skiping gender:', genderlabel.encode('utf-8'))
+                    continue
+                else:
+                    skiptogender = ''
             
             for translation in translations_list:
                 cqueries += 1
@@ -675,7 +688,7 @@ def main():
                     else:
                         skiptoperson = ''
                 
-                url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=SELECT%20%3Fitem%0AWHERE%20%7B%0A%20%20%20%20%3Fitem%20wdt%3AP31%20wd%3AQ5%20.%20%23instanceof%0A%20%20%20%20%3Fitem%20wdt%3AP21%20wd%3A'+genderq+'%20.%20%23gender%0A%20%20%20%20%3Fitem%20schema%3Adescription%20%22'+urllib.parse.quote(translation)+'%22%40en.%20%23description%0A%20%20%20%20OPTIONAL%20%7B%20%3Fitem%20schema%3Adescription%20%3FitemDescription.%20FILTER(LANG(%3FitemDescription)%20%3D%20%22'+targetlang+'%22).%20%20%7D%0A%20%20%20%20FILTER%20(!BOUND(%3FitemDescription))%0A%7D'
+                url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=SELECT%20%3Fitem%20%7B%0A%20%20BIND%28%20STRLANG%28%20%22urllib.parse.quote%28translation%29%22%2C%20%22en%22%20%29%20AS%20%3Fdesc%20%29%20.%0A%20%20%3Fitem%20schema%3Adescription%20%3Fdesc%20.%0A%20%20MINUS%20%7B%0A%20%20%20%20%3Fitem%20schema%3Adescription%20%3Fdescription%20.%0A%20%20%20%20FILTER%28%20LANG%28%20%3Fdescription%20%29%20%3D%20%22bn%22%20%29%20.%0A%20%20%7D%0A%20%20%7D'
                 url = '%s&format=json' % (url)
                 sparql = getURL(url=url)
                 json1 = loadSPARQL(sparql=sparql)
