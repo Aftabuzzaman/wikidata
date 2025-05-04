@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2017 emijrp <emijrp@gmail.com>
+# Copyright (C) 2017-2018 emijrp <emijrp@gmail.com>
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -45,7 +45,7 @@ def main():
     rows = []
     c = 1
     for lang in langs:
-        wplink = '[[:%s:|%s]] (<!--[https://%s.wikipedia.org/wiki/Special:ActiveUsers?username=&groups=sysop&wpFormIdentifier=specialactiveusers au]{{·}} [https://%s.wikipedia.org/wiki/Special:Recentchanges rc]{{·}} -->[[:Category:User %s|babel]])' % (lang, lang, lang, lang, lang)
+        wplink = '[[:%s:|%s]] || [[:Category:User %s|{{PAGESINCATEGORY:User %s|pages|R}}]] || [https://%s.wikipedia.org/wiki/Special:ActiveUsers?username=&groups=sysop&wpFormIdentifier=specialactiveusers AU] || [https://%s.wikipedia.org/wiki/Special:Recentchanges RC]' % (lang, lang, lang, lang, lang, lang)
         row = [str(c), wplink]
         for q in qq:
             if lang in translations[q]:
@@ -60,7 +60,7 @@ def main():
 {{notice|This page contains all available translations for different types of Wikimedia pages. Please, check the translations for your language, add the missing ones and fix any mistakes. '''Don't edit this table directly, click in the links and edit the labels there'''. A bot will update this table regularly. Thank you.}}
 
 {| class="wikitable sortable plainlinks" style="text-align: center;font-size: 90%%;"
-! # !! Language !! %s
+! # !! Lang !! Babel !! AU || RC || %s
 |-
 | %s
 |}""" % (headersplain, rowsplain)

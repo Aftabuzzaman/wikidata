@@ -1,2 +1,5 @@
 # wikidata
-Scripts for Wikidata
+
+Scripts for Wikidata.
+
+Requirements: pywikibot.
